@@ -1,5 +1,6 @@
 package net.jazflix.springboot3mediaapi.user;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> postUser(@RequestBody User user) {
+    public ResponseEntity<User> postUser(@Valid @RequestBody User user) {
         Long id =  userDao.insertUser(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
