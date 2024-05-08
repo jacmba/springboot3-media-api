@@ -44,4 +44,14 @@ public class UserController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @DeleteMapping("{id}")
+    public User deleteUser(@PathVariable("id") Long id) {
+        Optional<User> user = userDao.deleteUser(id);
+        if(user.isPresent()) {
+            return user.get();
+        }
+
+        throw new UserNotFoundException(id);
+    }
 }

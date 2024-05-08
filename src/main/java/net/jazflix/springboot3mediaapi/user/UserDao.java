@@ -43,4 +43,10 @@ public class UserDao {
 
         return id;
     }
+
+    public Optional<User> deleteUser(Long id) {
+        Optional<User> user = findOne(id);
+        user.ifPresent(users::remove);
+        return user;
+    }
 }
