@@ -2,12 +2,15 @@ package net.jazflix.springboot3mediaapi.user;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -15,10 +18,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserDao userDao;
+    private final MessageSource messageSource;
 
     @Autowired
-    public UserController(UserDao userDao) {
+    public UserController(UserDao userDao, MessageSource messageSource) {
         this.userDao = userDao;
+        this.messageSource = messageSource;
     }
 
     @GetMapping
@@ -54,5 +59,14 @@ public class UserController {
         }
 
         throw new UserNotFoundException(id);
+    }
+
+    @GetMapping("hello/{id}")
+    public String helloUser(@PathVariable("id") Long id) {
+        User user = getUser(id);
+        Locale locale = LocaleContextHolder.getLocale();
+        String msg = messageSource.getMessage("hello", null, locale);
+
+        return msg + ", " + user.getName() + "!!";
     }
 }
