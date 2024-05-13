@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,6 +14,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/users")
@@ -32,10 +36,17 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public User getUser(@PathVariable("id") Long id) {
+    public EntityModel<User> getUser(@PathVariable("id") Long id) {
         Optional<User> user = userDao.findOne(id);
         if (user.isPresent()) {
-            return user.get();
+            EntityModel<User> model = EntityModel.of(user.get());
+
+            WebMvcLinkBuilder link = linkTo(
+                    methodOn(getClass()).getAllUsers()
+            );
+            model.add(link.withRel("all-users"));
+
+            return model;
         }
 
         throw new UserNotFoundException(id);
@@ -63,10 +74,10 @@ public class UserController {
 
     @GetMapping("hello/{id}")
     public String helloUser(@PathVariable("id") Long id) {
-        User user = getUser(id);
+        EntityModel<User> user = getUser(id);
         Locale locale = LocaleContextHolder.getLocale();
         String msg = messageSource.getMessage("hello", null, locale);
 
-        return msg + ", " + user.getName() + "!!";
+        return msg + ", " + user.getContent().getName() + "!!";
     }
 }
