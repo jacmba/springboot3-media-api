@@ -1,6 +1,8 @@
 package net.jazbelt.springboot3mediaapi.user;
 
 import jakarta.validation.Valid;
+import net.jazbelt.springboot3mediaapi.post.Post;
+import net.jazbelt.springboot3mediaapi.post.PostDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,11 +24,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class UserController {
 
     private final UserDao userDao;
+    private final PostDao postDao;
     private final MessageSource messageSource;
 
     @Autowired
-    public UserController(UserDao userDao, MessageSource messageSource) {
+    public UserController(UserDao userDao,
+                          PostDao postDao,
+                          MessageSource messageSource) {
         this.userDao = userDao;
+        this.postDao = postDao;
         this.messageSource = messageSource;
     }
 
@@ -79,5 +85,30 @@ public class UserController {
         String msg = messageSource.getMessage("hello", null, locale);
 
         return msg + ", " + user.getContent().getName() + "!!";
+    }
+
+    @GetMapping("{id}/posts")
+    public List<Post> getUserPosts(@PathVariable("id") Long id) {
+        Optional<User> user = userDao.findOne(id);
+        if(user.isPresent()) {
+            return user.get().getPosts();
+        }
+
+        throw new UserNotFoundException(id);
+    }
+
+    @PostMapping("{id}/posts")
+    public ResponseEntity<Post> postCreateUserPost(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody Post post
+    ) {
+        Optional<User> user = userDao.findOne(id);
+        if(user.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+
+        post.setUser(user.get());
+        Post result = postDao.savePost(post);
+        return ResponseEntity.ofNullable(result);
     }
 }
