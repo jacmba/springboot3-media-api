@@ -1,6 +1,6 @@
-package net.jazflix.springboot3mediaapi.error;
+package net.jazbelt.springboot3mediaapi.error;
 
-import net.jazflix.springboot3mediaapi.user.UserNotFoundException;
+import net.jazbelt.springboot3mediaapi.user.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

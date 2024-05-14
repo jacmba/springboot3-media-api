@@ -1,4 +1,4 @@
-package net.jazflix.springboot3mediaapi;
+package net.jazbelt.springboot3mediaapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

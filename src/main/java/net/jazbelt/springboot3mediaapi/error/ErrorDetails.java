@@ -1,4 +1,4 @@
-package net.jazflix.springboot3mediaapi.error;
+package net.jazbelt.springboot3mediaapi.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

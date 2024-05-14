@@ -1,4 +1,4 @@
-package net.jazflix.springboot3mediaapi.user;
+package net.jazbelt.springboot3mediaapi.user;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

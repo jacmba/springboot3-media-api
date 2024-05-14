@@ -1,4 +1,4 @@
-package net.jazflix.springboot3mediaapi.user;
+package net.jazbelt.springboot3mediaapi.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
