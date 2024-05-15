@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+	implementation 'com.mysql:mysql-connector-j'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
 	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml'
 
